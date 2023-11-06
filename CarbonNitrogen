@@ -1,0 +1,105 @@
+##############################################################################
+#                                                                            #
+#        Programma in Python per gestire il rapporto C/N del compost         #
+#                                                                            #
+#                             Marino 07/11/2023                              #
+#                                                                            #
+##############################################################################
+
+
+# Definizione della funzione che calcola il rapporto C/N di un materiale organico
+def rapporto_cn(carbonio, azoto):
+  # Controllo che i parametri siano validi
+  if carbonio <= 0 or azoto <= 0:
+    print("Errore: i valori di carbonio e azoto devono essere positivi")
+    return None
+  # Calcolo il rapporto C/N
+  rapporto = carbonio / azoto
+  # Restituisco il risultato
+  return rapporto
+
+# Definizione della funzione che calcola il rapporto C/N di una miscela di materiali organici
+def rapporto_cn_miscela(materiali):
+  # Controllo che il parametro sia valido
+  if not isinstance(materiali, list) or len(materiali) == 0:
+    print("Errore: il parametro deve essere una lista non vuota di materiali organici")
+    return None
+  # Inizializzazione delle variabili per il carbonio e l'azoto totali
+  carbonio_totale = 0
+  azoto_totale = 0
+  # Ciclo per materiale organico nella lista
+  for materiale in materiali:
+    # Controllo che il materiale sia valido
+    if not isinstance(materiale, dict) or len(materiale) != 4:
+      print("Errore: ogni materiale deve essere un dizionario con quattro chiavi: nome, carbonio, azoto e quantita")
+      return None
+    # Estraggo le informazioni dal dizionario
+    nome = materiale["nome"]
+    carbonio = materiale["carbonio"]
+    azoto = materiale["azoto"]
+    quantita = materiale["quantita"]
+    # Controllo che le informazioni siano valide
+    if not isinstance(nome, str) or not isinstance(carbonio, (int, float)) or not isinstance(azoto, (int, float)) or not isinstance(quantita, (int, float)):
+      print("Errore: i valori del dizionario devono essere del tipo corretto")
+      return None
+    if carbonio <= 0 or azoto <= 0 or quantita <= 0:
+      print("Errore: i valori del dizionario devono essere positivi")
+      return None
+    # Calcolo il rapporto C/N del materiale
+    rapporto = rapporto_cn(carbonio, azoto)
+    # Stampo il risultato parziale
+    print(f"Il rapporto C/N del materiale {nome} è {rapporto:.2f}")
+    # Aggiorno le variabili per il carbonio e l'azoto totali
+    carbonio_totale += carbonio * quantita / 100
+    azoto_totale += azoto * quantita / 100
+  # Calcolo il rapporto C/N della miscela
+  rapporto = rapporto_cn(carbonio_totale, azoto_totale)
+  # Stampo il risultato finale
+  print(f"Il rapporto C/N della miscela è {rapporto:.2f}")
+  # Restituisco il risultato
+  return rapporto
+
+# Qui di seguito un esempio di utilizzo della funzione con una miscela di trebbie della birra e letame bovino e altri materiali organici
+
+# Qui sotto creo una lista di materiali organici con le relative informazioni
+materiali = [
+  {
+    "nome": "trebbie della birra",
+    "carbonio": 10,
+    "azoto": 1,
+    "quantita": 5000 # grammi
+  },
+  {
+     "nome": "Cartone",
+     "carbonio": 150,
+     "azoto": 1,
+     "quantita": 1000 # grammi
+   },
+  {
+     "nome": "Fondi di caffè",
+     "carbonio": 20,
+     "azoto": 1,
+     "quantita": 5000 # grammi
+   },
+   #{
+   #  "nome": "Erba Fresca",
+   #  "carbonio": 15,
+   #  "azoto": 1,
+   #  "quantita": 0 # grammi
+   #},
+  # {
+  #   "nome": "Paglia di frumento",
+  #   "carbonio": 80,
+  #   "azoto": 1,
+ #    "quantita": 0 # grammi
+  # },
+ # {
+ #   "nome": "letame bovino",
+ #   "carbonio": 20,
+ #   "azoto": 1,
+ #   "quantita": 0 # grammi
+ # }
+]
+
+# Richiamo la funzione con la lista di materiali organici
+rapporto_cn_miscela(materiali)
